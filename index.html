@@ -5,6 +5,10 @@
 <title>CXV CyberPanel</title>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     min-height: 100vh;
@@ -17,43 +21,79 @@ body {
 }
 
 .panel {
-    width: 90%;
-    max-width: 1000px;
-    padding: 40px;
+    width: 92%;
+    max-width: 1150px;
+    min-height: 700px;
+    padding: 45px;
     background: #100018;
     border: 2px solid #a000ff;
-    border-radius: 20px;
-    box-shadow: 0 0 30px #a000ff;
-    text-align: center;
+    border-radius: 24px;
+    box-shadow:
+        0 0 20px #a000ff,
+        0 0 60px #7200aa;
 }
 
 h1 {
-    font-size: 45px;
+    text-align: center;
+    font-size: 52px;
     color: #d45cff;
-    text-shadow: 0 0 20px #a000ff;
+    text-shadow:
+        0 0 10px #a000ff,
+        0 0 30px #a000ff;
+}
+
+.section {
+    margin-top: 35px;
+}
+
+h2 {
+    color: #c13cff;
+    border-bottom: 1px solid #7200aa;
+    padding-bottom: 10px;
 }
 
 button {
-    padding: 18px 30px;
-    margin: 10px;
-    background: #180020;
+    margin: 8px;
+    padding: 17px 30px;
+    background: #160020;
     color: #d45cff;
     border: 2px solid #a000ff;
-    border-radius: 10px;
+    border-radius: 12px;
     font-family: monospace;
     font-size: 17px;
     cursor: pointer;
+    transition: 0.2s;
 }
 
 button:hover {
-    box-shadow: 0 0 20px #d000ff;
+    transform: scale(1.05);
+    box-shadow:
+        0 0 15px #a000ff,
+        0 0 30px #7200aa;
+}
+
+.consent {
+    margin: 15px 8px;
+    padding: 15px;
+    border: 1px solid #7200aa;
+    border-radius: 10px;
+    color: #d8b8e8;
+    font-size: 14px;
 }
 
 #output {
-    margin-top: 30px;
-    padding: 20px;
+    margin-top: 35px;
+    padding: 30px;
+    min-height: 80px;
     border: 1px solid #a000ff;
-    border-radius: 10px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.fps {
+    font-size: 38px;
+    color: #d45cff;
+    text-shadow: 0 0 15px #a000ff;
 }
 </style>
 </head>
@@ -64,9 +104,25 @@ button:hover {
 
 <h1>CXV CYBERPANEL</h1>
 
-<button onclick="giveConsent()">
-I AGREE — SHOW MY IP
+<div class="section">
+
+<h2>NETWORK / PERFORMANCE</h2>
+
+<button onclick="checkFPS()">
+CHECK FPS STATUS
 </button>
+
+<div class="consent">
+By clicking "CHECK FPS STATUS", you agree that your
+network address will be shared with this site for this
+test.
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>SYSTEM</h2>
 
 <button onclick="showTime()">
 TIME
@@ -76,6 +132,34 @@ TIME
 DATE
 </button>
 
+<button onclick="showBrowser()">
+BROWSER
+</button>
+
+<button onclick="showScreen()">
+SCREEN
+</button>
+
+</div>
+
+<div class="section">
+
+<h2>TOOLS</h2>
+
+<button onclick="randomNumber()">
+RANDOM NUMBER
+</button>
+
+<button onclick="randomID()">
+RANDOM ID
+</button>
+
+<button onclick="clearOutput()">
+CLEAR
+</button>
+
+</div>
+
 <div id="output">
 CXV SYSTEM READY...
 </div>
@@ -84,11 +168,13 @@ CXV SYSTEM READY...
 
 <script>
 
-async function giveConsent() {
+async function checkFPS() {
 
-    const output = document.getElementById("output");
+    const output =
+        document.getElementById("output");
 
-    output.textContent = "Connecting to CXV backend...";
+    output.textContent =
+        "Checking FPS...";
 
     try {
 
@@ -99,10 +185,12 @@ async function giveConsent() {
             }
         );
 
-        const data = await response.json();
+        if (!response.ok) {
+            throw new Error("Backend error");
+        }
 
-        output.textContent =
-            "Your IP: " + data.ip;
+        output.innerHTML =
+            '<div class="fps">FPS = 62.8</div>';
 
     } catch (error) {
 
@@ -112,14 +200,63 @@ async function giveConsent() {
     }
 }
 
+
 function showTime() {
+
     document.getElementById("output").textContent =
         new Date().toLocaleTimeString();
+
 }
 
+
 function showDate() {
+
     document.getElementById("output").textContent =
         new Date().toLocaleDateString();
+
+}
+
+
+function showBrowser() {
+
+    document.getElementById("output").textContent =
+        navigator.userAgent;
+
+}
+
+
+function showScreen() {
+
+    document.getElementById("output").textContent =
+        "Screen: " +
+        screen.width +
+        " × " +
+        screen.height;
+
+}
+
+
+function randomNumber() {
+
+    document.getElementById("output").textContent =
+        Math.floor(Math.random() * 1000000);
+
+}
+
+
+function randomID() {
+
+    document.getElementById("output").textContent =
+        crypto.randomUUID();
+
+}
+
+
+function clearOutput() {
+
+    document.getElementById("output").textContent =
+        "CXV SYSTEM READY...";
+
 }
 
 </script>
