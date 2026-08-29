@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>CXV Test</h1>
+
+<button onclick="hello()">Click me</button>
+
+<script>
+function hello() {
+    alert("Hello from CXV!");
+}
+</script>
+
+</body>
+</html>
+d
+s
+s
+fs
+fs
